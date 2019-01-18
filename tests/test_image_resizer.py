@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# from thumbnail_maker import ThumbnailMakerService
-from ImgSizer import ThumbnailMakerService
+from ImgSizer import ImageSizerController
+from ImgSizer import Img
 
 IMG_URLS = \
     ['https://dl.dropboxusercontent.com/s/2fu69d8lfesbhru/pexels-photo-48603.jpeg',
@@ -30,7 +30,9 @@ IMG_URLS = \
      'https://dl.dropboxusercontent.com/s/l7ga4ea98hfl49b/pexels-photo-333529.jpeg',
      'https://dl.dropboxusercontent.com/s/rleff9tx000k19j/pexels-photo-341520.jpeg'
     ]
-    
-def test_thumbnail_maker():
-    tn_maker = ThumbnailMakerService()
-    tn_maker.make_thumbnails(IMG_URLS)
+# def test_init_image_size_controller():
+#     img_sizer = ImageSizerController(IMG_URLS, Img())
+
+def test_image_sizer_controller():
+    img_sizer = ImageSizerController(IMG_URLS, Img())
+    img_sizer.perform_resizing(IMG_URLS)
