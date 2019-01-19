@@ -1,5 +1,11 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
+
+# IMPORT Standard
+import os
+import shutil
+
+# IMPORT Custom
 from ImgSizer import Img
 
 IMG_URLS = \
@@ -31,9 +37,54 @@ IMG_URLS = \
      'https://dl.dropboxusercontent.com/s/rleff9tx000k19j/pexels-photo-341520.jpeg'
     ]
 
-def test_image():
+def test_image_init():
     '''
-    Test for Img class
+    Test init for Img class
     '''
-    img = Img()
-    img.download_images(IMG_URLS)
+    test_data_path = 'test_data_path'
+    assert not os.path.exists(test_data_path), \
+    f'{test_data_path} should not exists'
+
+    img = Img(test_data_path)
+    assert img.input_dir == test_data_path + os.path.sep +'incoming', \
+    f'{img.input_dir} should match'
+    assert img.output_dir == test_data_path + os.path.sep +'outgoing', \
+    f'{img.output_dir} should match'
+    
+    # Clear test dirs
+    shutil.rmtree(test_data_path)
+    assert not os.path.exists(test_data_path), 'Test file should be deleted'
+
+    img_default = Img()
+    assert img_default.input_dir == './data/' + os.path.sep +'incoming', \
+    f'{img.input_dir} should match'
+    assert img_default.output_dir == './data/' + os.path.sep +'outgoing', \
+    f'{img.output_dir} should match'
+
+    # Clear test files
+    shutil.rmtree(img_default.input_dir)
+    shutil.rmtree(img_default.output_dir)
+    assert not os.path.exists(img_default.input_dir), 'Test file should be deleted'
+    assert not os.path.exists(img_default.input_dir), 'Test file should be deleted'
+
+def test_image_down():
+    '''
+    Test download_images for Img class
+    '''
+    test_img = Img()
+    assert os.path.isdir(test_img.input_dir), f'Is {test_img.input_dir} dir?'
+    assert os.path.isdir(test_img.output_dir), f'Is {test_img.output_dir} dir?'
+    assert os.listdir(test_img.input_dir) == [], \
+    f'{test_img.input_dir} should be empty'
+    assert os.listdir(test_img.output_dir) == [], \
+    f'{test_img.output_dir} should be empty'
+    
+    test_img.download_images(IMG_URLS)
+    assert len(os.listdir(test_img.input_dir)) == len(IMG_URLS), \
+    f'After downloading, {test_img.input_dir} should have images'
+
+    # Clear test files
+    shutil.rmtree(test_img.input_dir)
+    shutil.rmtree(test_img.output_dir)
+    assert not os.path.exists(test_img.input_dir), 'Test file should be deleted'
+    assert not os.path.exists(test_img.output_dir), 'Test file should be deleted'

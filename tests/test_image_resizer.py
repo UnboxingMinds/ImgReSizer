@@ -1,5 +1,8 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
+import os
+import shutil
+
 from ImgSizer import ImageSizerController
 from ImgSizer import Img
 
@@ -31,9 +34,24 @@ IMG_URLS = \
      'https://dl.dropboxusercontent.com/s/l7ga4ea98hfl49b/pexels-photo-333529.jpeg',
      'https://dl.dropboxusercontent.com/s/rleff9tx000k19j/pexels-photo-341520.jpeg'
     ]
-# def test_init_image_size_controller():
-#     img_sizer = ImageSizerController(IMG_URLS, Img())
 
 def test_image_sizer_controller():
-    img_sizer = ImageSizerController(Img(), IMG_URLS, [32, 64, 200])
+    test_target = [32, 64, 200]
+    test_img = Img()
+    assert os.listdir(test_img.input_dir) == [], 'Input should be empty'
+    
+    img_sizer = ImageSizerController(test_img, IMG_URLS, test_target)
+    assert os.listdir(test_img.output_dir) == [], \
+    'Output dir should be empty when initialised'
+    assert len(os.listdir(test_img.input_dir)) == len(IMG_URLS), \
+    'input dir should have test images populated'
+    
     img_sizer.perform_resizing()
+    assert len(os.listdir(test_img.output_dir)) == len(IMG_URLS) * \
+    len(test_target), 'Output images should be multiplied by test_target size'
+
+    # Clear test files
+    shutil.rmtree(test_img.input_dir)
+    shutil.rmtree(test_img.output_dir)
+    assert not os.path.exists(test_img.input_dir)
+    assert not os.path.exists(test_img.output_dir)
