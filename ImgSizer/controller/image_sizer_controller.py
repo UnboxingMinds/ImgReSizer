@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This is where your module level help string goes.
@@ -23,11 +24,21 @@ class ImageSizerController:
     '''
     ImageSizer Processor
     '''
-    def __init__(self, img_url_list, img):
+    def __init__(self, img, img_url_list, targets, log=True):
+        '''
+        :arg img: Img class
+        :type img: Img object
+        :arg img_url_list: list of img urls
+        :type img_url_list: str list
+        :arg targets: image height sizes
+        :type targets: int list
+        '''
         self.images = img
-        self.images.download_images(img_url_list)
+        self.images.download_images(img_url_list, log)
+        self.target_sizes = targets
+        self.keep_log = log
 
-    def perform_resizing(self, targets=[32, 64, 200], keep_log=True):
+    def perform_resizing(self):
         '''
         Processing images
         '''
@@ -36,18 +47,17 @@ class ImageSizerController:
             return
         os.makedirs(self.images.output_dir, exist_ok=True)
         # ---------------------------------------------------------------------
-        if keep_log:
-            logging.info("Beginning image resizing")
-        
         num_images = len(os.listdir(self.images.input_dir))
         # start time for logging
         start = time.perf_counter()
-        target_sizes = targets
+
+        if self.keep_log:
+            logging.info(f'Beginning image resizing at {start}')
         
         # Processing
         for filename in os.listdir(self.images.input_dir):
             orig_img = Image.open(self.images.input_dir + os.path.sep + filename)
-            for basewidth in target_sizes:
+            for basewidth in self.target_sizes:
                 tmp_img = orig_img
                 # calculate target height of the resized image
                 # to maintain the aspect ratio
@@ -60,11 +70,11 @@ class ImageSizerController:
                     '_' + str(basewidth) + os.path.splitext(filename)[1]
                 tmp_img.save(self.images.output_dir + os.path.sep + new_filename)
 
-            os.remove(self.images.input_dir + os.path.sep + filename)
+            # os.remove(self.images.input_dir + os.path.sep + filename)
         # end time for logging
         end = time.perf_counter()
 
-        if keep_log:
+        if self.keep_log:
             logging.info("Created {} thumbnails in {} seconds".\
             format(num_images, end - start))
 

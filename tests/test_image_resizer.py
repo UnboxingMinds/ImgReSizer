@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 from ImgSizer import ImageSizerController
 from ImgSizer import Img
@@ -34,5 +35,5 @@ IMG_URLS = \
 #     img_sizer = ImageSizerController(IMG_URLS, Img())
 
 def test_image_sizer_controller():
-    img_sizer = ImageSizerController(IMG_URLS, Img())
-    img_sizer.perform_resizing(IMG_URLS)
+    img_sizer = ImageSizerController(Img(), IMG_URLS, [32, 64, 200])
+    img_sizer.perform_resizing()

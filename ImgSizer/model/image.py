@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This is where your module level help string goes.
@@ -21,7 +22,7 @@ logging.basicConfig(filename='logfile.log', level=logging.DEBUG)
 
 class Img:
     '''
-    Image
+    Image Wrapper
     '''
     def __init__(self, home_dir='./data/'):
         self.home_dir = home_dir
