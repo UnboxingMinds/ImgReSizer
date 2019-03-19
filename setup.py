@@ -9,7 +9,7 @@ requirements = ["requests>=2", "Pillow>=5.4", "imagesize>=1.1"]
     # requirements = req_files.read().splitlines()
 
 setup(
-    name="ImgReSizer",
+    name="imgresizer",
     version="0.0.1",
     author="Tumurtogtokh Davaakhuu",
     author_email="tumurtogtokh@gmail.com",

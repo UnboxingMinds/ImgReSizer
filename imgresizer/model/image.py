@@ -20,10 +20,12 @@ from urllib.request import urlretrieve
 
 logging.basicConfig(filename='logfile.log', level=logging.DEBUG)
 
+
 class Img:
     '''
     Image Wrapper
     '''
+
     def __init__(self, home_dir='./data/'):
         self.home_dir = home_dir
         self.input_dir = self.home_dir + os.path.sep + 'incoming'
@@ -56,10 +58,13 @@ class Img:
         end = time.perf_counter()
 
         if keep_log:
-            logging.info("Downloaded: {} images in {} seconds\n".\
-            format(len(img_url_list), end - start))
+            logging.info("Downloaded: {} images in {} seconds\n".
+                         format(len(img_url_list), end - start))
+
+
 # -----------------------------------------------------------------------------
 __all__ = ['Img']
+
 
 def main():
     '''
@@ -67,6 +72,7 @@ def main():
     '''
     import __main__
     help(__main__)
+
 
 if __name__ == "__main__":
     main()

@@ -20,10 +20,12 @@ from PIL import Image
 
 logging.basicConfig(filename='logfile.log', level=logging.DEBUG)
 
+
 class ImageSizerController:
     '''
     ImageSizer Processor
     '''
+
     def __init__(self, img, img_url_list, targets, log=True):
         '''
         :arg img: Img class
@@ -53,10 +55,11 @@ class ImageSizerController:
 
         if self.keep_log:
             logging.info(f'Beginning image resizing at {start}')
-        
+
         # Processing
         for filename in os.listdir(self.images.input_dir):
-            orig_img = Image.open(self.images.input_dir + os.path.sep + filename)
+            orig_img = Image.open(
+                self.images.input_dir + os.path.sep + filename)
             for basewidth in self.target_sizes:
                 tmp_img = orig_img
                 # calculate target height of the resized image
@@ -68,32 +71,20 @@ class ImageSizerController:
                 # save the resized image to the output dir with a modified name
                 new_filename = os.path.splitext(filename)[0] + \
                     '_' + str(basewidth) + os.path.splitext(filename)[1]
-                tmp_img.save(self.images.output_dir + os.path.sep + new_filename)
+                tmp_img.save(self.images.output_dir +
+                             os.path.sep + new_filename)
 
             # os.remove(self.images.input_dir + os.path.sep + filename)
         # end time for logging
         end = time.perf_counter()
 
         if self.keep_log:
-            logging.info("Created {} thumbnails in {} seconds".\
-            format(num_images, end - start))
+            logging.info("Created {} thumbnails in {} seconds".
+                         format(num_images, end - start))
 
-    # def make_thumbnails(self, target_sizes=[32, 64, 200]):
-    #     '''
-    #     Downloading/re-sizing in one go
-    #     '''
-    #     logging.info("START make_thumbnails")
-    #     # start time for logging
-    #     start = time.perf_counter()
-
-    #     # self.download_images(img_url_list)
-    #     self.perform_resizing(target_sizes)
-
-    #     # end time for logging
-    #     end = time.perf_counter()
-    #     logging.info("END make_thumbnails in {} seconds".format(end - start))
 
 __all__ = ['ImageSizerController']
+
 
 def main():
     '''
@@ -101,6 +92,7 @@ def main():
     '''
     import __main__
     help(__main__)
+
 
 if __name__ == "__main__":
     main()

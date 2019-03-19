@@ -23,9 +23,9 @@ import sys
 import os
 
 # IMPORT Local
-from ImgSizer import Img
-from ImgSizer import ImageSizerController
-from ImgSizer import CommandLine
+from imgresizer import Img
+from imgresizer import ImageSizerController
+from imgresizer import CommandLine
 
 # =============================================================================
 # MAIN
@@ -37,10 +37,10 @@ if __name__ == '__main__':
 
     if config.exit:
         sys.exit(0)
-    # IMG_URLS = config.process_img_url_file()
-    # TARGET = config.process_target_file()
+    IMG_URLS = config.process_img_url_file()
+    TARGET = config.process_target_file()
     HOME = os.getcwd()
-    DATA = '/home/tumurtogtokh/Desktop/ImgSizer/data/'
+    DATA = '/home/tumurtogtokh/Desktop/ImgReSizer/data'
 
-    # img_sizer = ImageSizerController(Img(DATA), IMG_URLS, TARGET)
-    # img_sizer.perform_resizing()
+    img_sizer = ImageSizerController(Img(DATA), IMG_URLS, TARGET)
+    img_sizer.perform_resizing()

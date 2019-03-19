@@ -3,8 +3,8 @@
 import os
 import shutil
 
-from ImgSizer import ImageSizerController
-from ImgSizer import Img
+from imgresizer import ImageSizerController
+from imgresizer import Img
 
 IMG_URLS = \
     ['https://dl.dropboxusercontent.com/s/2fu69d8lfesbhru/pexels-photo-48603.jpeg',
