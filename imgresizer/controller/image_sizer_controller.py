@@ -18,7 +18,8 @@ import logging
 import PIL
 from PIL import Image
 
-logging.basicConfig(filename='logfile.log', level=logging.DEBUG)
+FORMAT = "[%(threadName)s, %(asctime)s, %(levelname)s, %(message)s]"
+logging.basicConfig(filename='logfile.log', level=logging.DEBUG, format=FORMAT)
 
 
 class ImageSizerController:
@@ -79,7 +80,7 @@ class ImageSizerController:
         end = time.perf_counter()
 
         if self.keep_log:
-            logging.info("Created {} thumbnails in {} seconds".
+            logging.info("Created {} thumbnails in {} seconds\n".
                          format(num_images, end - start))
 
 

@@ -32,8 +32,8 @@ from imgresizer import CommandLine
 
 if __name__ == '__main__':
     config = CommandLine()
-    print(config.process_img_url_file())
-    print(config.process_target_file())
+    # print(config.process_img_url_file())
+    # print(config.process_target_file())
 
     if config.exit:
         sys.exit(0)

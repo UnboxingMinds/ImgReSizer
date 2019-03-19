@@ -15,6 +15,7 @@ import os
 import logging
 from urllib.parse import urlparse
 from urllib.request import urlretrieve
+import threading
 
 # IMPORT Local
 
@@ -33,7 +34,46 @@ class Img:
         os.makedirs(self.input_dir, exist_ok=True)
         os.makedirs(self.output_dir, exist_ok=True)
 
+    def download_img(self, url, keep_log=False):
+        # download each image and save to the input dir
+        img_filename = urlparse(url).path.split('/')[-1]
+        if keep_log:
+            logging.info("Beginning image download: " + img_filename)
+        urlretrieve(url, self.input_dir + os.path.sep + img_filename)
+
     def download_images(self, img_url_list, keep_log=True):
+        '''
+        Download images from url using threads
+        '''
+        # validation
+        if not img_url_list:
+            return
+        os.makedirs(self.input_dir, exist_ok=True)
+        # ---------------------------------------------------------------------
+        # if keep_log:
+        #     logging.info("Beginning image downloads")
+
+        # start time for logging
+        start = time.perf_counter()
+
+        threads = []
+        # Download starts
+        for url in img_url_list:
+            t = threading.Thread(target=self.download_img, args=(url,))
+            t.start()
+            threads.append(t)
+
+        for thread in threads:
+            thread.join()
+
+        # end time for loggin
+        end = time.perf_counter()
+
+        if keep_log:
+            logging.info("Downloaded: {} images in {} seconds".
+                         format(len(img_url_list), end - start))
+
+    def download_images_normal(self, img_url_list, keep_log=True):
         '''
         Download images from url
         '''
@@ -58,7 +98,7 @@ class Img:
         end = time.perf_counter()
 
         if keep_log:
-            logging.info("Downloaded: {} images in {} seconds\n".
+            logging.info("Downloaded: {} images in {} seconds".
                          format(len(img_url_list), end - start))
 
 

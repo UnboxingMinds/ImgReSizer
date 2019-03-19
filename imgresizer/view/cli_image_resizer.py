@@ -93,7 +93,7 @@ class CommandLine:
         '''
         urls = []
         if not os.path.isfile(self.img_urls_file):
-            print(IMG_URL_ERR, file=sys.stderr)
+            # print(IMG_URL_ERR, file=sys.stderr)
             return urls
         with open(self.img_urls_file, 'r') as fin:
             for line in fin:
@@ -107,7 +107,7 @@ class CommandLine:
         '''
         target = []
         if not os.path.isfile(self.target_file):
-            print(TARGET_ERR, file=sys.stderr)
+            # print(TARGET_ERR, file=sys.stderr)
             return target
         with open(self.target_file, 'r') as fin:
             for line in fin:
