@@ -31,15 +31,25 @@ class Img:
         self.home_dir = home_dir
         self.input_dir = self.home_dir + os.path.sep + 'incoming'
         self.output_dir = self.home_dir + os.path.sep + 'outgoing'
+        self.downloaded_bytes = 0
+        self.download_lock = threading.Lock()
         os.makedirs(self.input_dir, exist_ok=True)
         os.makedirs(self.output_dir, exist_ok=True)
 
     def download_img(self, url, keep_log=False):
         # download each image and save to the input dir
         img_filename = urlparse(url).path.split('/')[-1]
+        dest_path = self.input_dir + os.path.sep + img_filename
         if keep_log:
             logging.info("Beginning image download: " + img_filename)
-        urlretrieve(url, self.input_dir + os.path.sep + img_filename)
+        urlretrieve(url, dest_path)
+
+        img_size = os.path.getsize(dest_path)
+        with self.download_lock:
+            self.downloaded_bytes += img_size
+        if keep_log:
+            logging.info("Downloaded bytes: " + str(img_size) + " bytes")
+        
 
     def download_images(self, img_url_list, keep_log=True):
         '''
