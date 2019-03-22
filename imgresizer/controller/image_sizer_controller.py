@@ -77,7 +77,7 @@ class ImageSizerController:
         end = time.perf_counter()
 
         if self.keep_log:
-            logging.info("Created {} thumbnails in {} seconds\n".
+            logging.info("Created {} thumbnails in {} seconds".
                          format(num_images, end - start))
 
 
