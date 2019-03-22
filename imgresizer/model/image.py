@@ -40,16 +40,14 @@ class Img:
         # download each image and save to the input dir
         img_filename = urlparse(url).path.split('/')[-1]
         dest_path = self.input_dir + os.path.sep + img_filename
-        if keep_log:
-            logging.info("Beginning image download: " + img_filename)
-        urlretrieve(url, dest_path)
 
-        img_size = os.path.getsize(dest_path)
         with self.download_lock:
-            self.downloaded_bytes += img_size
+            urlretrieve(url, dest_path)
+            img_bytes = os.path.getsize(dest_path)
+            self.downloaded_bytes += img_bytes
         if keep_log:
-            logging.info("Downloaded bytes: " + str(img_size) + " bytes")
-        
+            logging.info("Image downloaded to: " + dest_path)
+            logging.info("Image size: " + str(img_bytes) + ' bytes')
 
     def download_images(self, img_url_list, keep_log=True):
         '''
