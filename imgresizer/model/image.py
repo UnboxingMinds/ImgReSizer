@@ -41,7 +41,7 @@ class Img:
         os.makedirs(self.input_dir, exist_ok=True)
         os.makedirs(self.output_dir, exist_ok=True)
 
-    def download_img(self, url, keep_log=True):
+    def download_img(self, url, keep_log=False):
         # download each image and save to the input dir
         img_filename = urlparse(url).path.split('/')[-1]
         dest_path = self.input_dir + os.path.sep + img_filename
@@ -54,8 +54,8 @@ class Img:
                 img_bytes = os.path.getsize(dest_path)
                 self.downloaded_bytes += img_bytes
             if keep_log:
-                logging.info("Image downloaded to: " + dest_path)
-                logging.info("Image size: " + str(img_bytes) + ' bytes')
+                logging.info("<Img> Image downloaded to: " + dest_path)
+                logging.info("<Img> Image size: " + str(img_bytes) + ' bytes')
         finally:
             self.sem_lock.release()    
     
@@ -86,7 +86,7 @@ class Img:
         end = time.perf_counter()
 
         if keep_log:
-            logging.info("Downloaded: {} images in {} seconds".
+            logging.info("<Img> Downloaded: {} images in {} seconds".
                          format(len(img_url_list), end - start))
 
 

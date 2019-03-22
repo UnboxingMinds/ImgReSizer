@@ -1,14 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-This is where your module level help string goes.
-
-.. module:: `CLI for Image Re-Sizer`
-   :platform: Unix
-   :synopsis: Put a synopsis of what this module does here.
-
-.. moduleauthor:: Tumurtogtokh Davaakhuu <tumurtogtokh@gmail.com>
-
 ------------------------------------------------------------
 USE: python <PROGNAME> (options)
 OPTIONS:
@@ -26,6 +18,7 @@ import os
 # GLOBAL CONSTANTS
 TARGET_ERR = "** ERROR: must specify target sizes file (opt: -t FILE) **"
 IMG_URL_ERR = "** ERROR: must specify image url file (opt: -i FILE) **"
+ARG_ERR = "** ERROR: must specify correct arguments **kwargs **"
 
 # =============================================================================
 # Command line processing
@@ -50,41 +43,34 @@ class CommandLine:
                 self.print_help()
                 self.exit = True
                 return
-
-            if len(args) > 0:
-                print("** ERROR: no arg files - only options! **", file=sys.stderr)
+            
+            if not ('-t' in opts and '-i' in opts):
+                print(ARG_ERR, file=sys.stderr)
                 self.print_help()
                 return
 
             if '-t' in opts:
                 self.target_file = opts['-t']
-            else:
-                print(TARGET_ERR, file=sys.stderr)
-                self.print_help()
-                return
-
+            
+            if '-l' in opts:
+                if str(opts['-l']).lower() == 'false':
+                    self.keep_log = False
+                else:
+                    self.keep_log = True
+            
             if '-i' in opts:
                 self.img_urls_file = opts['-i']
-            else:
-                print(IMG_URL_ERR, file=sys.stderr)
-                self.print_help()
-                return
-
-            if '-l' in opts:
-                self.keep_log = True
 
         except getopt.GetoptError as err:
             self.exit = True
+            print(ARG_ERR)
             self.print_help()
-            print("Specify correct **kwargs")
 
     def print_help(self):
         '''
         Displays help
         '''
         prog_name = sys.argv[0]
-        # prog_name = progname.split('/')[-1] # strip off extended path
-        # help = __doc__.replace('<PROGNAME>', prog_name, 1)
         print(__doc__.replace('<PROGNAME>', prog_name, 1), file=sys.stderr)
 
     def process_img_url_file(self):
@@ -115,13 +101,6 @@ class CommandLine:
                     target.append(int(line.strip()))
         return target
 
-# =============================================================================
-# MAIN
-
-# if __name__ == '__main__':
-    # config = CommandLine()
-    # print(config.process_img_url_file())
-    # print(config.process_target_file())
-
-    # if config.exit:
-    #     sys.exit(0)
+if __name__ == '__main__':
+    cli = CommandLine()
+    cli.exit = True
