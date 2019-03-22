@@ -43,4 +43,5 @@ if __name__ == '__main__':
     DATA = '/home/tumurtogtokh/Desktop/ImgReSizer/data'
 
     img_sizer = ImageSizerController(Img(DATA), IMG_URLS, TARGET)
-    img_sizer.perform_resizing()
+    # img_sizer.perform_resizing()
+    img_sizer.make_imgs()
