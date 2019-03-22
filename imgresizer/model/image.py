@@ -31,15 +31,23 @@ class Img:
         self.home_dir = home_dir
         self.input_dir = self.home_dir + os.path.sep + 'incoming'
         self.output_dir = self.home_dir + os.path.sep + 'outgoing'
+        self.downloaded_bytes = 0
+        self.download_lock = threading.Lock()
         os.makedirs(self.input_dir, exist_ok=True)
         os.makedirs(self.output_dir, exist_ok=True)
 
     def download_img(self, url, keep_log=False):
         # download each image and save to the input dir
         img_filename = urlparse(url).path.split('/')[-1]
+        dest_path = self.input_dir + os.path.sep + img_filename
+
+        with self.download_lock:
+            urlretrieve(url, dest_path)
+            img_bytes = os.path.getsize(dest_path)
+            self.downloaded_bytes += img_bytes
         if keep_log:
-            logging.info("Beginning image download: " + img_filename)
-        urlretrieve(url, self.input_dir + os.path.sep + img_filename)
+            logging.info("Image downloaded to: " + dest_path)
+            logging.info("Image size: " + str(img_bytes) + ' bytes')
 
     def download_images(self, img_url_list, keep_log=True):
         '''
@@ -82,17 +90,19 @@ class Img:
             return
         os.makedirs(self.input_dir, exist_ok=True)
         # ---------------------------------------------------------------------
-        if keep_log:
-            logging.info("Beginning image downloads")
 
         # start time for logging
         start = time.perf_counter()
 
+        threads = []
         # Download starts
         for url in img_url_list:
-            # download each image and save to the input dir
-            img_filename = urlparse(url).path.split('/')[-1]
-            urlretrieve(url, self.input_dir + os.path.sep + img_filename)
+            t = threading.Thread(target=self.download_img, args=(url,))
+            t.start()
+            threads.append(t)
+
+        for thread in threads:
+            thread.join()
 
         # end time for loggin
         end = time.perf_counter()

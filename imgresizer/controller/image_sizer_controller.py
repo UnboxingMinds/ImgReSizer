@@ -54,9 +54,6 @@ class ImageSizerController:
         # start time for logging
         start = time.perf_counter()
 
-        if self.keep_log:
-            logging.info(f'Beginning image resizing at {start}')
-
         # Processing
         for filename in os.listdir(self.images.input_dir):
             orig_img = Image.open(
