@@ -1,11 +1,14 @@
-#
+# Useful make commands
 
 test:
 	pytest
 
+setup:
+	python setup.py sdist bdist_wheel
+
 install:
-	python setup.py sdist
+	pip install -e .
 
 clear:
-	find . --name "*.pyc" -type f -delete
-	 
+	find . -name "*.jpeg" -type f -delete
+

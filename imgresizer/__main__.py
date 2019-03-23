@@ -30,7 +30,8 @@ from imgresizer import CommandLine
 # =============================================================================
 # MAIN
 
-if __name__ == '__main__':
+
+def main():
     config = CommandLine()
 
     if config.exit:
@@ -38,8 +39,12 @@ if __name__ == '__main__':
     IMG_URLS = config.process_img_url_file()
     TARGET = config.process_target_file()
     HOME = os.getcwd()
-    DATA = '/home/tumurtogtokh/Desktop/ImgReSizer/data'
+    DATA = 'data'
 
     img_sizer = ImageSizerController(Img(DATA), IMG_URLS, TARGET)
     # img_sizer.perform_resizing()
     img_sizer.make_imgs()
+
+
+if __name__ == '__main__':
+    main()

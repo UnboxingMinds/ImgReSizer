@@ -4,9 +4,7 @@ from setuptools import setup, find_packages
 with open("README.md", "r") as readme_file:
     readme = readme_file.read()
 
-requirements = ["requests>=2", "Pillow>=5.4", "imagesize>=1.1"]
-# with open("requirements.txt") as req_files:
-    # requirements = req_files.read().splitlines()
+requirements = ["requests>=2", "Pillow>=5.4"]
 
 setup(
     name="imgresizer",
@@ -18,10 +16,17 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/UnboxingMinds/ImgReSizer",
     packages=find_packages(),
-    # install_requires=parse_requirements('requirements.txt', session='hack'),
     install_requires = requirements,
+    license="MIT",
     classifiers=[
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
-        "License :: MIT License",
     ],
+    include_package_data = True,
+    entry_points={
+        "console_scripts":[
+            "imgresizer=imgresizer.__main__:main",
+        ]
+    },
 )
