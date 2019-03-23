@@ -1,6 +1,6 @@
 dist: xenial
 language: python
-python: 3.6.2
+python: 3.6.7
 install:
   - pip install -r requirements.txt
   - pip install -e .
@@ -8,4 +8,4 @@ script:
   - pytest --cov=imgresizer
 after_success:
   - coveralls
-    
+
