@@ -108,3 +108,4 @@ data/
 .vscode
 *.txt
 
+imgresizer/conf.json

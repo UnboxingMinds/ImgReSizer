@@ -27,10 +27,11 @@ class Img:
     Image Wrapper
     '''
 
-    def __init__(self, home_dir='./data/', max_con_dl=0):
+    def __init__(self, home_dir='./data/', in_img='incoming',
+                 out_img='outgoing', max_con_dl=0):
         self.home_dir = home_dir
-        self.input_dir = self.home_dir + os.path.sep + 'incoming'
-        self.output_dir = self.home_dir + os.path.sep + 'outgoing'
+        self.input_dir = self.home_dir + os.path.sep + in_img
+        self.output_dir = self.home_dir + os.path.sep + out_img
         self.downloaded_bytes = 0
         self.download_lock = threading.Lock()
         if max_con_dl > 1:
@@ -45,7 +46,7 @@ class Img:
         # download each image and save to the input dir
         img_filename = urlparse(url).path.split('/')[-1]
         dest_path = self.input_dir + os.path.sep + img_filename
-        
+
         # downloading images with limit of self.max_concurrent_dl
         self.sem_lock.acquire()
         try:
@@ -57,8 +58,8 @@ class Img:
                 logging.info("<Img> Image downloaded to: " + dest_path)
                 logging.info("<Img> Image size: " + str(img_bytes) + ' bytes')
         finally:
-            self.sem_lock.release()    
-    
+            self.sem_lock.release()
+
     def download_images(self, img_url_list, keep_log=True):
         '''
         Download images from url using threads

@@ -5,8 +5,7 @@
 USE: python <PROGNAME> (options)
 OPTIONS:
     -h : print this help message
-    -t FILE : target size FILE
-    -i FILE : image urls FILE
+    -c FILE: load a whole configuration as json
     -l : keep log configuration (default: without)
 ------------------------------------------------------------
 '''
@@ -14,6 +13,7 @@ OPTIONS:
 import getopt
 import sys
 import os
+import json
 
 # GLOBAL CONSTANTS
 TARGET_ERR = "** ERROR: must specify target sizes file (opt: -t FILE) **"
@@ -32,10 +32,11 @@ class CommandLine:
         self.img_urls_file = ''
         self.target_file = ''
         self.keep_log = False
+        self.json_path = ''
 
         try:
-            opts, args = getopt.getopt(sys.argv[1:], 'hl:t:i:l',
-                                       ['help', 'target sizes', 'img url', 'keeplog'])
+            opts, args = getopt.getopt(sys.argv[1:], 'h:c:l',
+                                       ['help', 'conf', 'log'])
             opts = dict(opts)
 
         # ---------------------------------------------------------------------
@@ -43,29 +44,34 @@ class CommandLine:
                 self.print_help()
                 self.exit = True
                 return
-            
-            if not ('-t' in opts and '-i' in opts):
-                print(ARG_ERR, file=sys.stderr)
-                self.print_help()
-                return
-
-            if '-t' in opts:
-                self.target_file = opts['-t']
-            
+            # keep log or not    
             if '-l' in opts:
                 if str(opts['-l']).lower() == 'false':
                     self.keep_log = False
                 else:
                     self.keep_log = True
-            
-            if '-i' in opts:
-                self.img_urls_file = opts['-i']
+            # load configuration from json
+            if '-c' in opts:
+                if os.path.exists(opts['-c']):
+                    self.json_path = opts['-c']
+                    conf = self.load_configuration()
+                    self.img_urls_file = conf['image_urls']
+                    self.target_file = conf['target']
+                else:
+                    print(ARG_ERR, file=sys.stderr)
+                    self.print_help()
 
         except getopt.GetoptError as err:
             self.exit = True
             print(ARG_ERR)
             self.print_help()
-
+    
+    def load_configuration(self):
+        with open(self.json_path, 'r') as fin:
+            conf = json.load(fin)
+            
+        return conf
+    
     def print_help(self):
         '''
         Displays help
