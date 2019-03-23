@@ -7,5 +7,5 @@ install:
 script:
   - pytest --cov=imgresizer
 after_success:
-  - coveralls
+  - COVERALLS_REPO_TOKEN=A5hzTMHk3NzWo9yzUPRpwWvH3oKHKhmzq coveralls
 
