@@ -7,7 +7,9 @@ from imgresizer import ImageSizerController
 from imgresizer import Img
 
 # Clear test files
-shutil.rmtree('./data')
+if not os.path.exists('data'):
+    os.mkdir('data')    
+shutil.rmtree('data')
 
 IMG_URLS = []
 DATA = 'data'
