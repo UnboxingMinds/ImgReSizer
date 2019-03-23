@@ -9,31 +9,32 @@ import pytest
 # IMPORT Custom
 from imgresizer import Img
 
-# Clear test files
-if not os.path.exists('data'):
-    os.mkdir('data')
-shutil.rmtree('data')
-
-IMG_URLS = []
 DATA = 'data'
 INCOMING = 'incoming'
 OUTGOING = 'outgoing'
 
-with open('tests/img_urls.txt', 'r') as test_img_urls:
-    for line in test_img_urls.readlines():
-        # if line.strip():
-        IMG_URLS.append(line)
 
-def test_img_urls():
-    assert len(IMG_URLS) == 20, 'IMG_URLS should have 20 link'
+@pytest.fixture
+def images():
+    urls = []
+    with open('tests/img_urls.txt', 'r') as test_img_urls:
+        for line in test_img_urls.readlines():
+            urls.append(line)
+    return urls
 
-def test_image_init():
+
+def test_img_urls(images):
+    assert len(images) == 20, 'IMG_URLS should have 20 link'
+
+
+def test_image_before_init():
     '''
-    Test init for Img class
+    Test before init for Img class
     '''
     test_data_path = 'test_data_path'
     assert not os.path.exists(test_data_path), \
         f'{test_data_path} should not exists'
+
 
 def test_data_path():
     test_data_path = 'test_data_path'
@@ -46,6 +47,7 @@ def test_data_path():
     # Clear test dirs
     shutil.rmtree(test_data_path)
     assert not os.path.exists(test_data_path), 'Test file should be deleted'
+
 
 def test_incoming_dir():
     img_default = Img()
@@ -62,10 +64,10 @@ def test_incoming_dir():
     assert not os.path.exists(
         img_default.input_dir), 'Test file should be deleted'
 
-@pytest.mark.skip('skipping')
-def test_image_down():
+
+def test_image_init():
     '''
-    Test download_images for Img class
+    Test init for Img class
     '''
     test_img = Img()
     assert os.path.isdir(test_img.input_dir), f'Is {test_img.input_dir} dir?'
@@ -75,11 +77,14 @@ def test_image_down():
     assert os.listdir(test_img.output_dir) == [], \
         f'{test_img.output_dir} should be empty'
 
-@pytest.mark.skip('skipping')
-def test_download_images():
+
+def test_download_images(images):
+    '''
+    Test download_images for Img class
+    '''
     test_img = Img()
-    test_img.download_images(IMG_URLS)
-    assert len(os.listdir(test_img.input_dir)) == len(IMG_URLS), \
+    test_img.download_images(images)
+    assert len(os.listdir(test_img.input_dir)) == len(images), \
         f'After downloading, {test_img.input_dir} should have images'
 
     # Clear test files
