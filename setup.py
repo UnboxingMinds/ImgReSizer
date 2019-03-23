@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 with open("README.md", "r") as readme_file:
     readme = readme_file.read()
 
-requirements = ["requests>=2", "Pillow>=5.4"]
+requirements = ["requests>=2", "Pillow>=5.4", "imagesize>=1.1"]
 
 setup(
     name="imgresizer",
