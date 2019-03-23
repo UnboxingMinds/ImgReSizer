@@ -106,6 +106,6 @@ venv.bak/
 *.code-workspace
 data/
 .vscode
-*.txt
 
 imgresizer/conf.json
+tests/test_conf.json
