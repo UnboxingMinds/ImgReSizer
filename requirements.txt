@@ -6,11 +6,11 @@ Babel==2.6.0
 bleach==3.1.0
 certifi==2018.11.29
 chardet==3.0.4
-coverage==4.0.3
+coverage==4.5
 docutils==0.14
 idna==2.8
 imagesize==1.1.0
--e git+https://github.com/UnboxingMinds/ImgReSizer.git@b95434c69993a1d47f5fb313ccccbac0854a6619#egg=imgresizer
+-e git+https://github.com/UnboxingMinds/ImgReSizer.git@14b188eda64151112ee17484db165adfa867ee0e#egg=imgresizer
 isort==4.3.4
 lazy-object-proxy==1.3.1
 MarkupSafe==1.1.0
