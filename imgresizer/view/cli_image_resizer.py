@@ -30,7 +30,7 @@ class CommandLine:
     def __init__(self):
         self.exit = False
         self.img_urls_file = ''
-        self.target_file = ''
+        # self.target_file = ''
         self.keep_log = False
         self.json_path = ''
 
@@ -56,7 +56,7 @@ class CommandLine:
                     self.json_path = opts['-c']
                     conf = self.load_configuration()
                     self.img_urls_file = conf['image_urls']
-                    self.target_file = conf['target']
+                    # self.target_file = conf['target']
                 else:
                     print(ARG_ERR, file=sys.stderr)
                     self.print_help()
@@ -67,6 +67,9 @@ class CommandLine:
             self.print_help()
     
     def load_configuration(self):
+        '''
+        Load configuration json from a :py:attr:imgresizer.Commandline.json_path
+        '''
         with open(self.json_path, 'r') as fin:
             conf = json.load(fin)
             
@@ -82,6 +85,9 @@ class CommandLine:
     def process_img_url_file(self):
         '''
         Return list of url
+
+        :return: list of url
+        :rtype: list
         '''
         urls = []
         if not os.path.isfile(self.img_urls_file):
@@ -93,19 +99,19 @@ class CommandLine:
                     urls.append(line.strip())
         return urls
 
-    def process_target_file(self):
-        '''
-        Returns target size list from input arg
-        '''
-        target = []
-        if not os.path.isfile(self.target_file):
-            print(TARGET_ERR, file=sys.stderr)
-            return target
-        with open(self.target_file, 'r') as fin:
-            for line in fin:
-                if line.strip():
-                    target.append(int(line.strip()))
-        return target
+    # def process_target_file(self):
+    #     '''
+    #     Returns target size list from input arg
+    #     '''
+    #     target = []
+    #     if not os.path.isfile(self.target_file):
+    #         print(TARGET_ERR, file=sys.stderr)
+    #         return target
+    #     with open(self.target_file, 'r') as fin:
+    #         for line in fin:
+    #             if line.strip():
+    #                 target.append(int(line.strip()))
+    #     return target
 
 if __name__ == '__main__':
     cli = CommandLine()

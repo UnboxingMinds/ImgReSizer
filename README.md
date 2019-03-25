@@ -15,19 +15,19 @@ A sample json:
 
 ```json
 {
-    "target": "/path/to/target.txt",
+    "targets": [
+        400,
+        200,
+        100
+    ],
     "data": "data",
+    "num_threads": 8,
     "input_dir": "incoming",
     "output_dir" : "outgoing",
     "image_urls" : "/path/to/urls.txt"
 }
 ```
 Firstly, it downloads them and stores them inside **data/input_dir** directory. Then it starts processing images to re-size and store re-sized image to **data/output_dir** with its new size added to its name.
-
-*target* is a file where target size options are stored. A sample target file:\
-`100`\
-`200`\
-`400`
 
 Additionally, you can pass `-l true` so that it logs the process.
 

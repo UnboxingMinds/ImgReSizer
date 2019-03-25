@@ -1,13 +1,13 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-This is where your module level help string goes.
+ImageSizer Processor
 
 .. module:: `Image Re-Sizer`
-   :platform: Unix, Windows
-   :synopsis: Put a synopsis of what this module does here.
-
-.. moduleauthor:: Tumurtogtokh Davaakhuu <tumurtogtokh@gmail.com>
+   :platform: Unix
+   :synopsis: Download images and perform resizing on them. 
+.. note:: Currently it is not making use og Img class.
+.. todo:: Implement thread pooling and use Img class.
 '''
 # IMPORT STANDARD
 import time
@@ -31,14 +31,15 @@ class ImageSizerController:
     ImageSizer Processor
     '''
 
-    def __init__(self, img, img_url_list, targets, log=True, num_threas=16):
+    def __init__(self, img, img_url_list, targets, log=True, num_threads=16):
         '''
-        :arg img: Img class
+        :arg Img img: Img class that will be used
         :type img: Img object
-        :arg img_url_list: list of img urls
+        :arg list img_url_list: list of img urls
         :type img_url_list: str list
-        :arg targets: image height sizes
+        :arg list targets: image height sizes
         :type targets: int list
+        :arg int num_threads: Maximum number of threads that use 
         '''
         self.images = img
         # self.images.download_images_queue(img_url_list, log)
@@ -50,6 +51,11 @@ class ImageSizerController:
         self.num_threads = 16
 
     def download_imgs(self, keep_log=True):
+        '''
+        Download images and put them in Queue
+
+        :arg bool keep_log: Keep log or not
+        '''
         # start time for logging
         start = time.perf_counter()
         while not self.dl_queue.empty():
@@ -95,7 +101,7 @@ class ImageSizerController:
                     # perform resizing
                     tmp_img = tmp_img.resize(
                         (basewidth, hsize), PIL.Image.LANCZOS)
-                    # save the resized image to the output dir with a modified name
+                    # save the resized image to the output dir
                     new_filename = os.path.splitext(filename)[0] + \
                         '_' + str(basewidth) + os.path.splitext(filename)[1]
                     tmp_img.save(self.images.output_dir +
@@ -114,6 +120,9 @@ class ImageSizerController:
                          format(num_images, end - start))
 
     def make_imgs(self):
+        '''
+        Download and perform images
+        '''
         start = time.perf_counter()
         logging.info('Making images')
 

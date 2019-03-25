@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 '''
 ------------------------------------------------------------
-This is where your module level help string goes.
+Main entry for ImgReSizer.
 
 .. module:: `Main`
-   :platform: Unix, Windows
-   :synopsis: Put a synopsis of what this module does here.
+   :platform: Unix
+   :synopsis: Takes configuration json with :py:class: imgresizer.CommandLine and run image processing
 
 .. moduleauthor:: Tumurtogtokh Davaakhuu <tumurtogtokh@gmail.com>
 ------------------------------------------------------------
@@ -32,12 +32,13 @@ def main():
         sys.exit(0)
 
     IMG_URLS = cli.process_img_url_file()
-    TARGET = cli.process_target_file()
+    TARGET = config['targets']
+    MAX_THREADS = config['num_threads']
     DATA = config['data']
     INCOMING = config['input_dir']
     OUTGOING = config['output_dir']
 
-    img_sizer = ImageSizerController(Img(DATA, INCOMING, OUTGOING),
+    img_sizer = ImageSizerController(Img(DATA, INCOMING, OUTGOING, MAX_THREADS),
                                      IMG_URLS, TARGET)
     # img_sizer.perform_resizing()
     img_sizer.make_imgs()

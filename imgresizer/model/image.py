@@ -1,13 +1,11 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-This is where your module level help string goes.
+Image Wrapper
 
 .. module:: `Img`
-   :platform: Unix, Windows
-   :synopsis: Put a synopsis of what this module does here.
-
-.. moduleauthor:: Tumurtogtokh Davaakhuu <tumurtogtokh@gmail.com>
+   :platform: Unix
+   :synopsis: Class to wrap Image object
 '''
 # IMPORT STANDARD
 import time
@@ -25,6 +23,12 @@ logging.basicConfig(filename='logfile.log', level=logging.DEBUG)
 class Img:
     '''
     Image Wrapper
+    
+    :arg str home_dir: Parent directory for in_img and out_img
+    :arg str in_img: Input directory for downloaded images
+    :arg str out_img: Output directory for exported images
+    :arg int max_con_dl: Maximum number of threads can use
+
     '''
 
     def __init__(self, home_dir='./data/', in_img='incoming',
@@ -43,6 +47,12 @@ class Img:
         os.makedirs(self.output_dir, exist_ok=True)
 
     def download_img(self, url, keep_log=False):
+        '''
+        Download image
+
+        :arg str url: Url of image
+        :arg bool keep_log: Keep log or not
+        '''
         # download each image and save to the input dir
         img_filename = urlparse(url).path.split('/')[-1]
         dest_path = self.input_dir + os.path.sep + img_filename
@@ -63,6 +73,9 @@ class Img:
     def download_images(self, img_url_list, keep_log=True):
         '''
         Download images from url using threads
+
+        :arg str img_url_list: Url of images to download
+        :arg bool keep_log: Keep log or not
         '''
         # validation
         if not img_url_list:
