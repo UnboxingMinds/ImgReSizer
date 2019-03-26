@@ -8,7 +8,7 @@ requirements = ["requests>=2", "Pillow>=5.4", "imagesize>=1.1"]
 
 setup(
     name="imgresizer",
-    version="0.0.1",
+    version="1.0.0",
     author="Tumurtogtokh Davaakhuu",
     author_email="tumurtogtokh@gmail.com",
     description="A package to re-size images",
